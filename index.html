@@ -1,0 +1,1967 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farma Cero-Filas</title>
+
+<style>
+
+:root {
+  --blue: #287db5;
+  --blue-dark: #15577f;
+  --blue-soft: #e8f5ff;
+  --blue-pale: #f4faff;
+  --sky: #b9e3fb;
+  --ink: #17364a;
+  --muted: #587184;
+  --white: #ffffff;
+  --line: #d8e9f4;
+  --green-soft: #e2f6ec;
+  --green-text: #176642;
+  --red-soft: #ffeded;
+  --red-text: #a52e38;
+  --yellow-soft: #fff5dc;
+  --yellow-text: #805a13;
+  --shadow: 0 12px 34px rgba(31, 93, 132, .09);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--blue-pale);
+  color: var(--ink);
+  line-height: 1.65;
+  font-size: 17px;
+}
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid #69b8e8;
+  outline-offset: 3px;
+}
+header {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(12px);
+  padding: 14px 6%;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 14px;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 4px 18px rgba(24, 83, 119, .05);
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--blue-dark); font-size: 23px; font-weight: 800;
+  letter-spacing: -.5px;
+}
+.logo-mark {
+  width: 42px; height: 42px; display: grid; place-items: center;
+  border-radius: 14px; background: var(--blue-soft); font-size: 24px;
+}
+nav { display: flex; gap: 8px; flex-wrap: wrap; }
+nav button {
+  background: transparent; border: 0; border-radius: 999px;
+  padding: 10px 15px; color: var(--ink); font-weight: 700;
+  font-size: 15px; min-height: 44px;
+}
+nav button:hover { background: var(--blue-soft); color: var(--blue-dark); }
+.hero {
+  position: relative; overflow: hidden;
+  padding: 66px 7%;
+  background:
+  radial-gradient(circle at 85% 15%, rgba(101, 214, 208, .30), transparent 30%),
+  linear-gradient(120deg, #eaf6ff 0%, #f5fbff 55%, #e5f8f6 100%);
+}
+.hero-inner {
+  max-width: 1200px; margin: auto;
+  display: grid; grid-template-columns: 1.15fr .85fr;
+  align-items: center; gap: 35px;
+}
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--blue-dark); background: #fff;
+  border: 1px solid #d5eafa; border-radius: 999px;
+  padding: 7px 13px; font-weight: 800; font-size: 13px;
+  margin-bottom: 18px;
+}
+.hero h1 { font-size: clamp(34px, 5vw, 57px); line-height: 1.1; letter-spacing: -1.5px; max-width: 700px; }
+.hero h1 span { color: var(--blue); }
+.hero p { color: var(--muted); margin: 18px 0 25px; max-width: 610px; font-size: 19px; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-art {
+  min-height: 310px; position: relative; display: grid; place-items: center;
+}
+.art-cloud {
+  width: min(100%, 430px); min-height: 285px; position: relative;
+  display: grid; place-items: center; border-radius: 38px;
+  background: linear-gradient(145deg, #d4edff, #fafdff);
+  border: 1px solid #c5e5f8; box-shadow: var(--shadow);
+}
+.art-person {
+  position: absolute; display: grid; place-items: center;
+  width: 112px; height: 112px; border-radius: 32px;
+  background: white; box-shadow: 0 10px 25px rgba(36,103,145,.12);
+  font-size: 58px;
+}
+.art-person.senior { left: 35px; bottom: 32px; transform: rotate(-5deg); }
+.art-person.pharmacist { right: 32px; top: 28px; transform: rotate(5deg); }
+.art-pill {
+  position: absolute; left: 44%; top: 35%; font-size: 64px;
+  filter: drop-shadow(0 8px 8px rgba(40,125,181,.18));
+}
+.art-label {
+  position: absolute; right: 18px; bottom: 20px;
+  background: white; border: 1px solid var(--line);
+  border-radius: 14px; padding: 9px 13px; font-size: 13px;
+  color: var(--blue-dark); font-weight: 800; box-shadow: var(--shadow);
+}
+.container { width: 88%; max-width: 1180px; margin: 48px auto; }
+.section-heading { margin-bottom: 22px; }
+.section-title { font-size: clamp(25px, 3vw, 32px); margin-bottom: 5px; letter-spacing: -.5px; }
+.description { color: var(--muted); margin-bottom: 20px; font-size: 17px; }
+.button {
+  background: var(--blue); color: white; border: 0;
+  border-radius: 13px; padding: 13px 20px; font-weight: 800;
+  min-height: 48px; display: inline-flex; align-items: center;
+  justify-content: center; gap: 8px; box-shadow: 0 5px 14px rgba(40,125,181,.16);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.button:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 18px rgba(40,125,181,.2); }
+.button:disabled { opacity: .48; cursor: not-allowed; transform: none; box-shadow: none; }
+.secondary { background: #e5f3fc; color: var(--blue-dark); box-shadow: none; }
+.secondary:hover { background: #d2eafa; color: var(--blue-dark); }
+.danger { background: #b9434b; }
+.danger:hover { background: #96343b; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.stat, .card, .panel {
+  background: white; border: 1px solid #e1edf5; border-radius: 20px;
+  padding: 23px; box-shadow: var(--shadow);
+}
+.stat { text-align: left; position: relative; overflow: hidden; }
+.stat strong { display: block; color: var(--blue); font-size: 32px; line-height: 1.2; margin-bottom: 5px; }
+.stat span { font-size: 14px; color: var(--muted); font-weight: 700; }
+.search { display: flex; gap: 10px; margin: 22px 0; }
+.search-modern {
+    align-items: center;
+    background: #ffffff;
+    padding: 8px;
+    border: 1px solid #d8e9f4;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(31, 93, 132, .10);
+}
+
+.search-modern input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    margin: 0;
+    background: transparent;
+}
+
+.search-modern .button {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.camera-button {
+    min-width: 48px;
+    padding: 12px;
+    font-size: 20px;
+}
+
+.prescription-details {
+    margin: 12px 0 22px;
+    border: 1px solid #d8e9f4;
+    border-radius: 14px;
+    background: #f4faff;
+    overflow: hidden;
+}
+
+.prescription-details summary {
+    padding: 15px;
+    color: #15577f;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.prescription-details[open] .prescription-panel {
+    margin: 0;
+    border: none;
+    border-top: 1px solid #d8e9f4;
+    border-radius: 0;
+}
+input, select {
+  width: 100%; padding: 14px 15px; border: 1px solid #cbdfea;
+  border-radius: 12px; font-size: 17px; background: white; color: var(--ink);
+  margin-top: 6px; min-height: 50px;
+}
+input:focus, select:focus { outline: 3px solid #b9e3fb; border-color: var(--blue); }
+label { font-weight: 800; font-size: 15px; }
+.group { margin-bottom: 17px; }
+.filters { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 22px; }
+.filter {
+  border: 1px solid #cbdfea; background: white; color: var(--ink);
+  padding: 10px 17px; border-radius: 999px; min-height: 44px; font-weight: 700;
+}
+.filter:hover { background: var(--blue-soft); }
+.filter.active { background: var(--blue); color: white; border-color: var(--blue); }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.card { transition: transform .2s ease, box-shadow .2s ease; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 16px 35px rgba(31,93,132,.13); }
+.card h3 { margin: 7px 0 4px; font-size: 21px; }
+.card p { color: var(--muted); font-size: 15px; margin-bottom: 7px; }
+.medicine-icon {
+  width: 58px; height: 58px; display: grid; place-items: center;
+  border-radius: 18px; background: var(--blue-soft); font-size: 32px;
+}
+.status {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; border-radius: 999px; font-size: 13px;
+  font-weight: 800; margin: 8px 0 14px;
+}
+.available { background: var(--green-soft); color: var(--green-text); }
+.out { background: var(--red-soft); color: var(--red-text); }
+.pending { background: var(--yellow-soft); color: var(--yellow-text); }
+.card .button { width: 100%; }
+.empty {
+  background: white; border: 1px dashed #bdd8e9; border-radius: 16px;
+  padding: 28px; text-align: center; color: var(--muted); grid-column: 1 / -1;
+}
+.form-panel { display: none; margin-top: 25px; border-top: 5px solid var(--blue); }
+.form-panel.visible { display: block; }
+.notice {
+  background: #fff8e8; color: #795518; padding: 14px 16px;
+  border-radius: 12px; font-size: 14px; margin: 16px 0;
+  border: 1px solid #f5e5bd;
+}
+.receipt {
+  display: none; background: #edf8ff; border: 1px solid #b9ddf3;
+  padding: 20px; border-radius: 15px; margin-top: 18px;
+}
+.receipt.visible { display: block; }
+.receipt h3 { color: var(--blue-dark); margin-bottom: 10px; }
+.admin { display: none; }
+.admin.visible { display: block; }
+.admin-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; align-items: start; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 530px; }
+th, td { padding: 13px; text-align: left; border-bottom: 1px solid #e6eef4; font-size: 14px; }
+th { background: #eaf5fc; color: var(--blue-dark); }
+.actions { display: flex; gap: 7px; flex-wrap: wrap; }
+.small-button { padding: 8px 11px; border: 0; border-radius: 8px; cursor: pointer; font-weight: 800; min-height: 36px; }
+.request { border: 1px solid #e1eaf1; border-radius: 13px; padding: 16px; margin-top: 12px; background: #fbfdff; }
+
+.request-card {
+    padding: 20px;
+    margin-top: 16px;
+    border-radius: 17px;
+    background: #ffffff;
+    border: 1px solid #dcecf7;
+    box-shadow: 0 5px 16px rgba(40, 125, 181, 0.07);
+}
+
+.request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.request-header strong {
+    color: #15577f;
+    font-size: 18px;
+}
+
+.request-status {
+    display: inline-block;
+    padding: 8px 13px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.status-waiting {
+    background: #fff3d6;
+    color: #805b12;
+}
+
+.status-progress {
+    background: #e4f3ff;
+    color: #17618e;
+}
+
+.status-done {
+    background: #e2f7ed;
+    color: #176b46;
+}
+
+.status-cancelled {
+    background: #fde9e9;
+    color: #a33434;
+}
+
+.request-info {
+    color: #536b7c;
+    font-size: 16px;
+    margin: 9px 0;
+}
+
+.request-tracking {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 17px;
+    padding-top: 14px;
+    border-top: 1px solid #e7f0f6;
+    color: #287daf;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.tracking-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #43a5d8;
+    box-shadow: 0 0 0 5px #e5f4fc;
+    flex-shrink: 0;
+}
+
+footer {
+  background: #164f73; color: white; text-align: center;
+  padding: 38px 20px; margin-top: 65px;
+}
+footer p { font-size: 14px; color: #d7eaf6; margin-top: 7px; }
+.auth-panel { width: 88%; max-width: 1180px; margin: 24px auto; padding: 22px; background: #fff; border: 1px solid #dcecf7; border-radius: 20px; box-shadow: var(--shadow); }
+.auth-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+.auth-status { color: var(--blue-dark); font-weight: 700; margin-top: 10px; }
+.lookup-gate { background:#fff; border:1px solid #cfe5f4; border-radius:18px; padding:24px; margin:18px 0; }
+.prescription-panel { background:#f5fbff; border:1px solid #d8eaf6; border-radius:17px; padding:20px; margin:20px 0; }
+.prescription-preview { display:block; max-width:100%; max-height:280px; object-fit:contain; margin:14px 0; border-radius:12px; }
+.ocr-status { margin:12px 0; color:var(--blue-dark); font-weight:700; }
+.auth-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+@media(max-width:600px){ .auth-panel{width:92%;} .auth-grid{grid-template-columns:1fr;} }
+.hidden { display: none !important; }
+@media(max-width: 850px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-art { min-height: 260px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .admin-grid { grid-template-columns: 1fr; }
+}
+@media(max-width: 600px) {
+  body { font-size: 16px; }
+  header { padding: 12px 4%; }
+  .logo { font-size: 20px; }
+  nav { width: 100%; gap: 4px; }
+  nav button { flex: 1 1 42%; padding: 9px 7px; font-size: 14px; }
+  .container { width: 92%; margin: 34px auto; }
+  .grid, .stats { grid-template-columns: 1fr; }
+  .search { flex-direction: column; }
+  .hero { padding: 42px 5%; }
+  .hero p { font-size: 17px; }
+  .art-cloud { min-height: 240px; }
+  .art-person { width: 88px; height: 88px; font-size: 46px; }
+  .art-person.senior { left: 18px; bottom: 26px; }
+  .art-person.pharmacist { right: 18px; top: 22px; }
+  .art-pill { font-size: 52px; }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">💊 Farma Cero-Filas</div>
+
+    <nav>
+        <button onclick="showSection('inicio')">Inicio</button>
+        <button onclick="showSection('consultar')">Medicamentos</button>
+        <button onclick="showSection('historial')">Solicitudes</button>
+        <button id="adminNavButton" class="hidden" onclick="showSection('admin')">Administración</button>
+    </nav>
+</header>
+
+
+
+<section class="hero" id="inicio">
+    <div class="hero-inner">
+        <div>
+            <div class="eyebrow">💙 Una forma más sencilla de consultar</div>
+            <h1>Tus medicamentos, <span>sin filas innecesarias.</span></h1>
+            <p>
+                Consulta la disponibilidad antes de desplazarte.
+                Una experiencia clara, cercana y fácil de usar para todos.
+            </p>
+            <div class="hero-actions">
+                <button class="button" onclick="showSection('consultar')">💊 Consultar medicamentos</button>
+                <button class="button secondary" onclick="showSection('historial')">📋 Ver mis solicitudes</button>
+            </div>
+        </div>
+        <div class="hero-art" aria-label="Ilustración de una persona mayor, una profesional de farmacia y una pastilla">
+            <div class="art-cloud">
+                <div class="art-person senior" aria-hidden="true">👵</div>
+                <div class="art-pill" aria-hidden="true">💊</div>
+                <div class="art-person pharmacist" aria-hidden="true">👩‍⚕️</div>
+                <div class="art-label">Atención más sencilla para todos ✨</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="auth-panel" id="authPanel">
+    <h2 class="section-title">🔐 Mi cuenta</h2>
+    <p class="description">Crea una cuenta de prueba o inicia sesión para guardar y consultar tus propias solicitudes.</p>
+    <div class="auth-grid">
+        <div class="group"><label for="authEmail">Correo de prueba</label><input type="email" id="authEmail" autocomplete="email" placeholder="ejemplo@correo.com" required></div>
+        <div class="group"><label for="authPassword">Contraseña</label><input type="password" id="authPassword" autocomplete="current-password" minlength="6" placeholder="Mínimo 6 caracteres" required></div>
+    </div>
+    <div class="auth-actions">
+        <button class="button" type="button" onclick="registrarCuenta()">Crear cuenta</button>
+        <button class="button secondary" type="button" onclick="iniciarSesion()">Iniciar sesión</button>
+        <button class="button secondary hidden" id="logoutButton" type="button" onclick="cerrarSesion()">Cerrar sesión</button>
+    </div>
+    <p class="auth-status" id="authStatus" role="status">No has iniciado sesión.</p>
+    <p class="description" style="font-size:13px;margin-top:8px;">Usa una cuenta y datos ficticios para esta demostración. No ingreses información médica ni datos reales de pacientes.</p>
+</section>
+
+<section class="container" id="estadisticas">
+    <div class="section-heading">
+        <h2 class="section-title">Información clara, en pocos pasos</h2>
+        <p class="description">Busca, consulta y revisa el estado de tus solicitudes desde un solo lugar.</p>
+    </div>
+    <div class="stats">
+        <div class="stat">
+            <strong id="totalMedicamentos">0</strong>
+            <span>Medicamentos registrados</span>
+        </div>
+        <div class="stat">
+            <strong id="totalDisponibles">0</strong>
+            <span>Medicamentos disponibles</span>
+        </div>
+        <div class="stat">
+            <strong id="totalSolicitudes">0</strong>
+            <span>Solicitudes realizadas</span>
+        </div>
+    </div>
+</section>
+
+<!-- ÁREA DEL PACIENTE -->
+
+<main class="container" id="consultar">
+
+    <h2 class="section-title">Consulta tus medicamentos</h2>
+    <p class="description">
+        Busca el medicamento que aparece en tu fórmula médica y verifica su disponibilidad.
+    </p>
+
+    <div class="lookup-gate" id="medicineLoginGate">
+        <h3>🔐 Inicia sesión para consultar</h3>
+        <p>Para proteger la consulta, primero debes iniciar sesión con tu cuenta.</p>
+        <button class="button secondary" type="button" onclick="document.getElementById('authPanel').scrollIntoView({behavior:'smooth'}); document.getElementById('authEmail').focus();">Ir a Mi cuenta</button>
+    </div>
+
+    <div id="medicineLookupContent" class="hidden">
+     <!-- BÚSQUEDA DE MEDICAMENTOS -->
+
+<div class="search search-modern">
+    <input
+        id="searchInput"
+        aria-label="Buscar medicamento"
+        placeholder="¿Qué medicamento necesitas?"
+    >
+
+    <button
+        class="button"
+        type="button"
+        onclick="renderMedicines()"
+    >
+        Buscar
+    </button>
+
+    <button
+        class="button camera-button"
+        type="button"
+        aria-label="Abrir lector de fórmula médica"
+        title="Leer fórmula médica"
+        onclick="document.getElementById('prescriptionDetails').open = !document.getElementById('prescriptionDetails').open"
+    >
+        📷
+    </button>
+</div>
+
+<details class="prescription-details" id="prescriptionDetails">
+    <summary>Leer medicamento desde una fotografía</summary>
+
+    <section class="prescription-panel" aria-labelledby="prescriptionTitle">
+        <h3 id="prescriptionTitle">📷 Leer fórmula médica</h3>
+
+        <p class="description">
+            Selecciona o toma una fotografía de tu fórmula para intentar reconocer el medicamento.
+            Revisa el texto antes de buscar.
+        </p>
+
+        <div class="group">
+            <label for="prescriptionImage">Seleccionar o tomar una fotografía</label>
+            <input id="prescriptionImage" type="file" accept="image/*" capture="environment">
+        </div>
+
+        <img id="prescriptionPreview" class="prescription-preview hidden" alt="Vista previa de la fotografía seleccionada">
+
+        <p id="ocrStatus" class="ocr-status" role="status" aria-live="polite">
+            La fotografía se procesa en este navegador. No se guarda ni se envía a Supabase.
+            La lectura necesita conexión para cargar el lector de texto.
+        </p>
+
+        <div class="group">
+            <label for="ocrText">Texto detectado en la fotografía</label>
+            <textarea id="ocrText" rows="4" maxlength="5000" readonly placeholder="Aquí aparecerá el texto que el lector logre reconocer" style="width:100%;padding:13px;border:1px solid #cbdfea;border-radius:12px;font:inherit;margin-top:6px;"></textarea>
+        </div>
+
+        <div class="group">
+            <label for="recognizedMedicine">Escribe o corrige el nombre del medicamento</label>
+            <input id="recognizedMedicine" type="text" maxlength="100" placeholder="Nombre del medicamento">
+        </div>
+
+        <button class="button secondary" id="confirmRecognizedMedicine" type="button" onclick="confirmarNombreReconocido()" disabled>
+            Confirmar nombre y buscar
+        </button>
+    </section>
+</details>
+
+      <div class="filters">
+        <button class="filter active" onclick="setFilter('todos',this)">Todos</button>
+        <button class="filter" onclick="setFilter('disponible',this)">Disponibles</button>
+        <button class="filter" onclick="setFilter('agotado',this)">Agotados</button>
+        <button class="filter" onclick="setFilter('pendiente',this)">Pendientes</button>
+    </div>
+
+    <div class="grid" id="medicineList"></div>
+
+    <section class="panel form-panel" id="turnPanel">
+        <h2>Solicitar turno</h2>
+        <p class="description">Completa los datos de tu solicitud.</p>
+
+        <div class="notice">
+            Prototipo académico: los turnos no están confirmados
+            por ninguna farmacia real.
+        </div>
+
+        <form id="turnForm">
+            <div class="group">
+                <label for="patientId">Identificación de prueba (solo números)</label>
+                <input id="patientId" type="number" min="1" step="1" inputmode="numeric" required placeholder="Ej. 1000000000">
+            </div>
+            <div class="group">
+                <label for="patientName">Nombre del solicitante</label>
+                <input id="patientName" maxlength="60" required>
+            </div>
+
+            <div class="group">
+                <label for="selectedMedicine">Medicamento</label>
+                <input id="selectedMedicine" readonly>
+            </div>
+
+            <div class="group">
+                <label for="date">Fecha deseada</label>
+                <input type="date" id="date" required>
+            </div>
+
+            <div class="group">
+                <label for="time">Horario preferido</label>
+                <select id="time" required>
+                    <option value="">Selecciona un horario</option>
+                    <option>8:00 a. m. - 10:00 a. m.</option>
+                    <option>10:00 a. m. - 12:00 p. m.</option>
+                    <option>2:00 p. m. - 4:00 p. m.</option>
+                </select>
+            </div>
+
+            <button class="button" type="button" id="registerRequestButton" onclick="registrarSolicitudDesdeBoton()">Registrar solicitud</button>
+            <button class="button secondary" type="button" onclick="closeTurnForm()">Cancelar</button>
+        </form>
+
+        <div class="receipt" id="receipt"></div>
+      </section>
+    </div>
+</main>
+
+<!-- HISTORIAL -->
+
+<section class="container" id="historial">
+    <h2 class="section-title">Mis solicitudes</h2>
+    <p class="description">Inicia sesión para consultar únicamente las solicitudes asociadas a tu cuenta.</p>
+    <div class="panel" id="requestList"></div>
+</section>
+
+<!-- ADMINISTRADOR -->
+
+<section class="container admin" id="admin">
+
+    <h2 class="section-title">Panel de administración</h2>
+    <p class="description">
+        Administra el inventario y consulta las solicitudes de los pacientes.
+    </p>
+
+    <div class="notice">
+        Área demostrativa sin autenticación ni conexión a una farmacia real.
+        No introduzcas información personal o médica real.
+    </div>
+
+    <div class="admin-grid">
+
+        <!-- FORMULARIO DE MEDICAMENTOS -->
+
+        <div class="panel">
+            <h3 id="formTitle">Registrar medicamento</h3>
+            <br>
+
+            <form id="medicineForm">
+
+                <div class="group">
+                    <label for="medName">Nombre del medicamento</label>
+                    <input id="medName" maxlength="70" required
+                           placeholder="Ej. Acetaminofén">
+                </div>
+
+                <div class="group">
+                    <label for="medCategory">Categoría</label>
+                    <input id="medCategory" maxlength="70" required
+                           placeholder="Ej. Analgésico">
+                </div>
+
+                <div class="group">
+                    <label for="medQuantity">Cantidad disponible</label>
+                    <input id="medQuantity" type="number" min="0"
+                           max="100000" step="1" required>
+                </div>
+
+                <div class="group">
+                    <label for="medStatus">Estado</label>
+                    <select id="medStatus" required>
+                        <option value="disponible">Disponible</option>
+                        <option value="agotado">Agotado</option>
+                        <option value="pendiente">Pendiente de confirmación</option>
+                    </select>
+                </div>
+
+                <button class="button" type="button" id="saveMedicine" onclick="guardarMedicamento()">
+                    Guardar medicamento
+                </button>
+                <p id="medicineFeedback" role="status" aria-live="polite" style="margin-top:12px;font-weight:700;color:#15577f;"></p>
+
+                <button class="button secondary hidden" type="button"
+                        id="cancelEdit" onclick="resetMedicineForm()">
+                    Cancelar edición
+                </button>
+            </form>
+        </div>
+
+        <!-- INVENTARIO -->
+
+        <div class="panel">
+            <h3>Inventario de medicamentos</h3>
+            <br>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Medicamento</th>
+                            <th>Cantidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="panel" style="margin-top:22px;">
+        <h3>Solicitudes de los pacientes</h3>
+        <div id="adminRequests"></div>
+    </div>
+
+    <div style="margin-top:18px;">
+        <button class="button danger" onclick="resetDemo()">
+            Restaurar datos de demostración
+        </button>
+    </div>
+
+</section>
+
+<footer>
+    <h2>💊 Farma Cero-Filas</h2>
+    <p>Consulta antes de desplazarte.</p>
+    <p>Prototipo académico de emprendimiento.</p>
+    <p>© 2026 Farma Cero-Filas</p>
+</footer>
+
+<script>
+
+// =======================================
+// 1. DATOS INICIALES DE DEMOSTRACIÓN
+// =======================================
+
+const initialMedicines = [
+    {id:1, name:"Acetaminofén", category:"Analgésico", quantity:25, status:"disponible"},
+    {id:2, name:"Loratadina", category:"Antihistamínico", quantity:18, status:"disponible"},
+    {id:3, name:"Ibuprofeno", category:"Antiinflamatorio", quantity:0, status:"agotado"},
+    {id:4, name:"Losartán", category:"Medicamento cardiovascular", quantity:0, status:"pendiente"},
+    {id:5, name:"Amoxicilina", category:"Antibiótico", quantity:12, status:"disponible"},
+    {id:6, name:"Omeprazol", category:"Protector gástrico", quantity:0, status:"agotado"}
+];
+
+function loadData(key, fallback) {
+    try {
+        const data = localStorage.getItem(key);
+        if (!data) return JSON.parse(JSON.stringify(fallback));
+        const parsed = JSON.parse(data);
+        return Array.isArray(parsed) ? parsed : JSON.parse(JSON.stringify(fallback));
+    } catch (error) {
+        return JSON.parse(JSON.stringify(fallback));
+    }
+}
+
+let medicines = loadData("fcfMedicines", initialMedicines);
+let requests = loadData("fcfRequests", []);
+let activeFilter = "todos";
+let selectedMedicine = null;
+let editingId = null;
+
+function saveData() {
+    try {
+        localStorage.setItem("fcfMedicines", JSON.stringify(medicines));
+        return true;
+    } catch (error) {
+        alert("No fue posible guardar los datos en este navegador.");
+        return false;
+    }
+}
+
+// =======================================
+// 2. NAVEGACIÓN
+// =======================================
+
+function actualizarAccesoMedicamentos() {
+    const loggedIn = !!window.currentAuthUser;
+    document.getElementById("medicineLoginGate").classList.toggle("hidden", loggedIn);
+    document.getElementById("medicineLookupContent").classList.toggle("hidden", !loggedIn);
+    if (!loggedIn) {
+        document.getElementById("medicineList").replaceChildren();
+        closeTurnForm();
+    }
+}
+
+function showSection(section) {
+    if (section === "admin" && !window.isAdmin) {
+        alert("Esta sección está disponible únicamente para la cuenta administradora.");
+        return;
+    }
+    if (section === "consultar" && !window.currentAuthUser) {
+        actualizarAccesoMedicamentos();
+        document.getElementById("inicio").classList.add("hidden");
+        document.getElementById("estadisticas").classList.add("hidden");
+        document.getElementById("consultar").classList.remove("hidden");
+        document.getElementById("historial").classList.add("hidden");
+        document.getElementById("admin").classList.remove("visible");
+        document.getElementById("authPanel").scrollIntoView({behavior:"smooth"});
+        return;
+    }
+    document.getElementById("inicio").classList.toggle("hidden", section !== "inicio");
+    document.getElementById("estadisticas").classList.toggle("hidden", section === "admin");
+    document.getElementById("consultar").classList.toggle("hidden", section !== "consultar");
+    document.getElementById("historial").classList.toggle("hidden", section !== "historial");
+    document.getElementById("admin").classList.toggle("visible", section === "admin");
+
+    if (section === "admin") {
+        renderInventory();
+        renderAdminRequests();
+        if (typeof window.cargarSolicitudesAdmin === "function") {
+            window.cargarSolicitudesAdmin();
+        }
+    }
+
+    window.scrollTo({top:0, behavior:"smooth"});
+}
+
+// =======================================
+// 3. DISPONIBILIDAD Y ESTADOS
+// =======================================
+
+function statusText(status) {
+    if (status === "disponible") return "Disponible";
+    if (status === "agotado") return "Agotado";
+    return "Pendiente de confirmación";
+}
+
+function statusClass(status) {
+    if (status === "disponible") return "available";
+    if (status === "agotado") return "out";
+    return "pending";
+}
+
+// =======================================
+// 4. MOSTRAR MEDICAMENTOS
+// =======================================
+
+// Compara los nombres sin distinguir tildes, mayúsculas ni signos de puntuación.
+// Ejemplo: "acetaminofen" encuentra "Acetaminofén".
+function normalizarTextoBusqueda(texto) {
+    return String(texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, " ")
+        .trim()
+        .replace(/\s+/g, " ");
+}
+
+function renderMedicines() {
+    if (!window.currentAuthUser) {
+        actualizarAccesoMedicamentos();
+        return;
+    }
+    const query = normalizarTextoBusqueda(
+        document.getElementById("searchInput").value
+    );
+
+    const list = document.getElementById("medicineList");
+    list.innerHTML = "";
+    if (!query) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "Escribe el nombre que aparece en tu fórmula médica para consultar su disponibilidad.";
+        list.appendChild(empty);
+        return;
+    }
+
+    const results = medicines.filter(m => {
+        const matchesText = normalizarTextoBusqueda(m.name).includes(query);
+
+        const matchesFilter =
+            activeFilter === "todos" || m.status === activeFilter;
+
+        return matchesText && matchesFilter;
+    });
+
+    if (results.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "No encontramos medicamentos con esa búsqueda.";
+        list.appendChild(empty);
+        return;
+    }
+
+    results.forEach(m => {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const icon = document.createElement("div");
+        icon.className = "medicine-icon";
+        const medicineIllustrations = {
+            "acetaminofén": "💊",
+            "loratadina": "🌼",
+            "ibuprofeno": "🧴",
+            "losartán": "❤️",
+            "amoxicilina": "🩺",
+            "omeprazol": "🫧"
+        };
+        icon.textContent = medicineIllustrations[m.name.toLowerCase()] || "💊";
+
+        const title = document.createElement("h3");
+        title.textContent = m.name;
+
+        const category = document.createElement("p");
+        category.textContent = m.category;
+
+        const quantity = document.createElement("p");
+        quantity.textContent = m.status === "pendiente"
+            ? "Existencias sin confirmar"
+            : "Existencias de demostración: " + m.quantity;
+
+        const status = document.createElement("span");
+        status.className = "status " + statusClass(m.status);
+        status.textContent = statusText(m.status);
+
+        const button = document.createElement("button");
+        button.className = "button";
+        button.textContent = m.status === "disponible"
+            ? "Solicitar turno" : "No disponible";
+
+        button.disabled = m.status !== "disponible";
+        button.addEventListener("click", () => openTurnForm(m.id));
+
+        card.append(icon, title, category, quantity, status, button);
+        list.appendChild(card);
+    });
+}
+
+function setFilter(filter, button) {
+    activeFilter = filter;
+
+    document.querySelectorAll(".filter").forEach(b =>
+        b.classList.remove("active")
+    );
+
+    button.classList.add("active");
+    renderMedicines();
+}
+
+document.getElementById("searchInput")
+    .addEventListener("input", renderMedicines);
+
+// =======================================
+// LECTURA DE FÓRMULA MÉDICA (OCR)
+// =======================================
+
+let prescriptionObjectUrl = null;
+let ocrLibraryPromise = null;
+
+function cargarLectorOCR() {
+    if (window.Tesseract) return Promise.resolve(window.Tesseract);
+    if (ocrLibraryPromise) return ocrLibraryPromise;
+    ocrLibraryPromise = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
+        script.onload = () => window.Tesseract ? resolve(window.Tesseract) : reject(new Error("No se pudo iniciar el lector de texto."));
+        script.onerror = () => reject(new Error("No se pudo cargar el lector. Revisa tu conexión e inténtalo de nuevo."));
+        document.head.appendChild(script);
+    });
+    return ocrLibraryPromise;
+}
+
+document.getElementById("prescriptionImage").addEventListener("change", async function() {
+    const file = this.files && this.files[0];
+    const preview = document.getElementById("prescriptionPreview");
+    const status = document.getElementById("ocrStatus");
+    const recognized = document.getElementById("recognizedMedicine");
+    const confirmButton = document.getElementById("confirmRecognizedMedicine");
+    recognized.value = "";
+    document.getElementById("ocrText").value = "";
+    confirmButton.disabled = true;
+    if (prescriptionObjectUrl) URL.revokeObjectURL(prescriptionObjectUrl);
+    prescriptionObjectUrl = null;
+    if (!file) {
+        preview.classList.add("hidden");
+        preview.removeAttribute("src");
+        status.textContent = "La fotografía no se guarda en esta página ni se envía a Supabase.";
+        return;
+    }
+    if (!file.type.startsWith("image/")) {
+        status.textContent = "Selecciona un archivo de imagen válido.";
+        this.value = "";
+        return;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+        status.textContent = "La imagen supera 8 MB. Selecciona una fotografía más pequeña.";
+        this.value = "";
+        return;
+    }
+    prescriptionObjectUrl = URL.createObjectURL(file);
+    preview.src = prescriptionObjectUrl;
+    preview.classList.remove("hidden");
+    status.textContent = "Leyendo el texto de la imagen. Puede tardar un momento...";
+    try {
+        const Tesseract = await cargarLectorOCR();
+        const result = await Tesseract.recognize(file, "spa", {
+            logger: info => {
+                if (info.status === "recognizing text" && info.progress) {
+                    status.textContent = "Leyendo la fórmula: " + Math.round(info.progress * 100) + "%";
+                }
+            }
+        });
+        const text = (result.data.text || "").trim();
+        if (!text) {
+            status.textContent = "No se pudo reconocer texto. Escribe manualmente el nombre que aparece en tu fórmula.";
+            return;
+        }
+        // Se muestra el texto reconocido completo, pero nunca se interpreta ni
+        // selecciona automáticamente un medicamento.
+        document.getElementById("ocrText").value = text.slice(0, 5000);
+        status.textContent = "Texto reconocido. Lee el resultado y escribe manualmente el nombre exacto del medicamento en el campo inferior.";
+    } catch (error) {
+        console.error("Error al leer la fórmula:", error);
+        status.textContent = error.message || "No se pudo leer la imagen. Puedes escribir el nombre manualmente.";
+    }
+});
+
+document.getElementById("recognizedMedicine").addEventListener("input", function() {
+    document.getElementById("confirmRecognizedMedicine").disabled = !this.value.trim();
+});
+
+function confirmarNombreReconocido() {
+    if (!window.currentAuthUser) {
+        alert("Inicia sesión para consultar medicamentos.");
+        actualizarAccesoMedicamentos();
+        return;
+    }
+    const name = document.getElementById("recognizedMedicine").value.trim();
+    if (!name) {
+        alert("Revisa o escribe el nombre del medicamento antes de confirmar.");
+        return;
+    }
+    document.getElementById("searchInput").value = name;
+    activeFilter = "todos";
+    document.querySelectorAll(".filter").forEach(button => button.classList.toggle("active", button.textContent.trim() === "Todos"));
+    renderMedicines();
+    document.getElementById("medicineList").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+// =======================================
+// 5. ESTADÍSTICAS
+// =======================================
+
+function updateStats() {
+    document.getElementById("totalMedicamentos").textContent = medicines.length;
+
+    document.getElementById("totalDisponibles").textContent =
+        medicines.filter(m => m.status === "disponible").length;
+
+    document.getElementById("totalSolicitudes").textContent = requests.length;
+}
+
+// =======================================
+// 6. SOLICITAR TURNO
+// =======================================
+
+function today() {
+    const d = new Date();
+    return d.getFullYear() + "-" +
+        String(d.getMonth()+1).padStart(2,"0") + "-" +
+        String(d.getDate()).padStart(2,"0");
+}
+
+document.getElementById("date").min = today();
+
+function openTurnForm(id) {
+    if (!window.currentAuthUser) {
+        alert("Inicia sesión para continuar.");
+        actualizarAccesoMedicamentos();
+        return;
+    }
+    selectedMedicine = medicines.find(m => m.id === id);
+
+    if (!selectedMedicine || selectedMedicine.status !== "disponible") {
+        alert("El medicamento no está disponible.");
+        return;
+    }
+
+    document.getElementById("turnPanel").classList.add("visible");
+    document.getElementById("date").min = today();
+    document.getElementById("selectedMedicine").value = selectedMedicine.name;
+    document.getElementById("receipt").classList.remove("visible");
+    document.getElementById("turnPanel").scrollIntoView({behavior:"smooth"});
+}
+
+function closeTurnForm() {
+    document.getElementById("turnPanel").classList.remove("visible");
+    document.getElementById("turnForm").reset();
+    document.getElementById("receipt").classList.remove("visible");
+    selectedMedicine = null;
+}
+
+async function registrarSolicitud(event) {
+    event.preventDefault();
+
+    const form = document.getElementById("turnForm");
+    const receipt = document.getElementById("receipt");
+
+    // Evita que el formulario se envíe si no se eligió primero un medicamento.
+    if (!selectedMedicine) {
+        alert("Primero selecciona un medicamento disponible en la sección Medicamentos.");
+        return;
+    }
+
+    if (!form.reportValidity()) return;
+
+    const name = document.getElementById("patientName").value.trim();
+    const identification = document.getElementById("patientId").value.trim();
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+
+    if (!window.currentAuthUser) {
+        alert("Primero crea una cuenta o inicia sesión para registrar una solicitud.");
+        document.getElementById("authPanel").scrollIntoView({behavior:"smooth"});
+        return;
+    }
+    if (!/^\d+$/.test(identification) || Number(identification) <= 0) {
+        alert("Escribe una identificación de prueba válida, usando solo números.");
+        document.getElementById("patientId").focus();
+        return;
+    }
+    if (!name || !date || !time) {
+        alert("Completa todos los campos para registrar la solicitud.");
+        return;
+    }
+
+    if (date < today()) {
+        alert("La fecha no puede ser anterior al día de hoy.");
+        document.getElementById("date").focus();
+        return;
+    }
+
+    // Comprueba nuevamente que el medicamento siga disponible.
+    const current = medicines.find(m => m.id === selectedMedicine.id);
+    if (!current || current.status !== "disponible") {
+        alert("Este medicamento ya no aparece como disponible. Consulta el inventario nuevamente.");
+        closeTurnForm();
+        renderMedicines();
+        return;
+    }
+
+    // Guarda primero la solicitud en Supabase. Si la conexión falla,
+    // no mostramos un comprobante de registro exitoso.
+    if (!window.supabaseClient) {
+        alert("No se encontró la conexión con Supabase. Recarga la página e inténtalo nuevamente.");
+        return;
+    }
+
+    const requestCode = "FCF-" + Date.now().toString().slice(-7);
+    const { error: errorSolicitud } = await window.supabaseClient
+        .from("solicitudes")
+        .insert({
+            identificacion: Number(identification),
+            codigo: requestCode,
+            nombre_solicitante: name,
+            medicamento_id: current.id,
+            fecha: date,
+            horario: time,
+            estado: "pendiente",
+            usuario_id: window.currentAuthUser.id
+        });
+
+    if (errorSolicitud) {
+        console.error("Error al guardar la solicitud en Supabase:", errorSolicitud);
+        alert("No se pudo guardar la solicitud en la base de datos: " + errorSolicitud.message);
+        return;
+    }
+
+    const request = {
+        id: Date.now(),
+        code: requestCode,
+        name,
+        medicine: current.name,
+        date,
+        time,
+        status: "Pendiente de confirmación"
+    };
+
+    requests.push(request);
+
+    // Construye el comprobante con textContent para evitar insertar HTML del usuario.
+    receipt.replaceChildren();
+    const title = document.createElement("h3");
+    title.textContent = "✓ Solicitud registrada";
+    receipt.appendChild(title);
+
+    const details = [
+        "Código: " + request.code,
+        "Solicitante: " + request.name,
+        "Medicamento: " + request.medicine,
+        "Fecha: " + request.date,
+        "Horario: " + request.time,
+        "Estado: " + request.status,
+        "Este comprobante no confirma un turno real."
+    ];
+
+    details.forEach(detail => {
+        const paragraph = document.createElement("p");
+        paragraph.textContent = detail;
+        receipt.appendChild(paragraph);
+    });
+
+    receipt.classList.add("visible");
+    form.reset();
+    document.getElementById("selectedMedicine").value = current.name;
+    document.getElementById("date").min = today();
+
+    if (typeof window.cargarHistorialUsuario === "function") {
+        await window.cargarHistorialUsuario();
+    }
+    renderAdminRequests();
+    updateStats();
+}
+
+// El botón visible llama directamente al registro. También se conserva
+// el envío del formulario con Enter como alternativa accesible.
+async function registrarSolicitudDesdeBoton() {
+    const button = document.getElementById("registerRequestButton");
+    button.disabled = true;
+    button.textContent = "Registrando...";
+
+    try {
+        await registrarSolicitud({ preventDefault: function () {} });
+    } catch (error) {
+        console.error("Error al registrar la solicitud:", error);
+        alert("No se pudo registrar la solicitud. Revisa la consola para conocer el error.");
+    } finally {
+        button.disabled = false;
+        button.textContent = "Registrar solicitud";
+    }
+}
+
+document.getElementById("turnForm").addEventListener("submit", registrarSolicitud);
+
+// =======================================
+// 7. HISTORIAL DE SOLICITUDES
+// =======================================
+
+
+function renderRequests() {
+    const list = document.getElementById("requestList");
+    list.innerHTML = "";
+
+    if (!window.currentAuthUser) {
+        list.textContent = "Inicia sesión para consultar tu historial privado.";
+        return;
+    }
+
+    if (requests.length === 0) {
+        list.textContent = "Todavía no tienes solicitudes registradas en esta cuenta.";
+        return;
+    }
+
+    [...requests].reverse().forEach(r => {
+        const card = document.createElement("div");
+        card.className = "request request-card";
+
+        // Código de la solicitud
+        const header = document.createElement("div");
+        header.className = "request-header";
+
+        const title = document.createElement("strong");
+        title.textContent = "Solicitud " + (r.code || r.codigo || "sin código");
+
+        // Estado de la solicitud
+        const rawStatus = String(r.status || r.estado || "pendiente")
+            .trim()
+            .toLowerCase();
+
+        const statusLabels = {
+            pendiente: "Pendiente",
+            confirmado: "Confirmada",
+            confirmada: "Confirmada",
+            en_proceso: "En proceso",
+            en_preparacion: "Medicamento en preparación",
+            lista_para_reclamar: "Lista para reclamar",
+            entregado: "Entregada",
+            entregada: "Entregada",
+            cancelado: "Cancelada",
+            cancelada: "Cancelada"
+        };
+
+        const status = document.createElement("span");
+        status.className = "request-status";
+
+        if (rawStatus === "confirmado" || rawStatus === "confirmada" ||
+            rawStatus === "en_proceso" || rawStatus === "en_preparacion") {
+            status.classList.add("status-progress");
+        } else if (rawStatus === "entregado" || rawStatus === "entregada" || rawStatus === "lista_para_reclamar") {
+            status.classList.add("status-done");
+        } else if (rawStatus === "cancelado" || rawStatus === "cancelada") {
+            status.classList.add("status-cancelled");
+        } else {
+            status.classList.add("status-waiting");
+        }
+
+        status.textContent = statusLabels[rawStatus] || rawStatus;
+
+        header.append(title, status);
+
+        // Información de la solicitud
+        const medicine = document.createElement("p");
+        medicine.className = "request-info";
+        medicine.textContent = "💊 Medicamento: " +
+            (r.name || r.nombre_solicitante || r.medicine || r.medicamento || "No disponible");
+
+        const date = document.createElement("p");
+        date.className = "request-info";
+        date.textContent = "📅 Fecha: " + (r.date || r.fecha || "No disponible");
+
+        const time = document.createElement("p");
+        time.className = "request-info";
+        time.textContent = "🕒 Horario: " + (r.time || r.horario || "No disponible");
+
+        // Seguimiento visual
+        const tracking = document.createElement("div");
+        tracking.className = "request-tracking";
+
+        const dot = document.createElement("span");
+        dot.className = "tracking-dot";
+
+        const trackingText = document.createElement("span");
+        trackingText.textContent = statusLabels[rawStatus] || "Solicitud registrada";
+
+        tracking.append(dot, trackingText);
+
+        card.append(header, medicine, date, time, tracking);
+        list.appendChild(card);
+    });
+}
+
+
+// =======================================
+// 8. REGISTRAR MEDICAMENTOS
+// =======================================
+
+async function guardarMedicamento() {
+    const form = document.getElementById("medicineForm");
+    const feedback = document.getElementById("medicineFeedback");
+    feedback.textContent = "";
+
+    // Comprueba los campos obligatorios sin depender del envío automático del formulario.
+    if (!form.reportValidity()) return;
+
+    const name = document.getElementById("medName").value.trim();
+    const category = document.getElementById("medCategory").value.trim();
+    const quantityField = document.getElementById("medQuantity");
+    const quantity = Number(quantityField.value);
+    const status = document.getElementById("medStatus").value;
+
+    if (!name || !category || quantityField.value === "" ||
+        !Number.isInteger(quantity) || quantity < 0 || quantity > 100000) {
+        feedback.textContent = "Verifica el nombre, la categoría y la cantidad.";
+        return;
+    }
+
+    if (status === "disponible" && quantity < 1) {
+        feedback.textContent = "Si está disponible, registra al menos 1 unidad.";
+        return;
+    }
+
+    if (status === "agotado" && quantity !== 0) {
+        feedback.textContent = "Si está agotado, la cantidad debe ser 0.";
+        return;
+    }
+
+    try {
+    const supabase = window.supabaseClient;
+
+    if (!supabase) {
+        feedback.textContent = "No hay conexión con Supabase.";
+        return;
+    }
+
+    if (editingId !== null) {
+        const medicine = medicines.find(m => m.id === editingId);
+
+        if (!medicine) {
+            feedback.textContent = "No se encontró el medicamento.";
+            return;
+        }
+
+        // Actualizar nombre y categoría
+        const { error: errorMedicamento } = await supabase
+            .from("medicamentos")
+            .update({
+                nombre: name,
+                categoria: category
+            })
+            .eq("id", editingId);
+
+        if (errorMedicamento) throw errorMedicamento;
+
+        // Buscar el inventario del medicamento
+        const { data: inventario, error: errorBusqueda } = await supabase
+            .from("inventario")
+            .select("id")
+            .eq("medicamento_id", editingId)
+            .limit(1)
+            .maybeSingle();
+
+        if (errorBusqueda) throw errorBusqueda;
+
+        if (inventario) {
+            const { error } = await supabase
+                .from("inventario")
+                .update({ cantidad: quantity, estado: status })
+                .eq("id", inventario.id);
+
+            if (error) throw error;
+        } else {
+            const { error } = await supabase
+                .from("inventario")
+                .insert({
+                    medicamento_id: editingId,
+                    cantidad: quantity,
+                    estado: status
+                });
+
+            if (error) throw error;
+        }
+
+        Object.assign(medicine, { name, category, quantity, status });
+
+    } else {
+        const duplicate = medicines.some(
+            m => m.name.toLowerCase() === name.toLowerCase()
+        );
+
+        if (duplicate) {
+            feedback.textContent = "Ese medicamento ya está registrado.";
+            return;
+        }
+
+        // Crear el medicamento
+        const { data: nuevo, error: errorMedicamento } = await supabase
+            .from("medicamentos")
+            .insert({
+                nombre: name,
+                categoria: category,
+                descripcion: ""
+            })
+            .select("id")
+            .single();
+
+        if (errorMedicamento) throw errorMedicamento;
+
+        // Registrar su inventario
+        const { error: errorInventario } = await supabase
+            .from("inventario")
+            .insert({
+                medicamento_id: nuevo.id,
+                cantidad: quantity,
+                estado: status
+            });
+
+        if (errorInventario) {
+            await supabase
+                .from("medicamentos")
+                .delete()
+                .eq("id", nuevo.id);
+
+            throw errorInventario;
+        }
+
+        medicines.push({
+            id: nuevo.id,
+            name,
+            category,
+            quantity,
+            status
+        });
+    }
+
+} catch (error) {
+    console.error("Error al guardar medicamento:", error);
+    feedback.textContent = "No se pudo guardar: " + error.message;
+    return;
+}
+    resetMedicineForm();
+await cargarCatalogoDesdeSupabase();
+refreshAll();
+feedback.textContent = "✓ Medicamento guardado correctamente.";
+}
+
+// =======================================
+// 9. MOSTRAR INVENTARIO
+// =======================================
+
+function renderInventory() {
+    const body = document.getElementById("inventoryBody");
+    body.innerHTML = "";
+
+    if (medicines.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 4;
+        cell.textContent = "No hay medicamentos registrados.";
+        row.appendChild(cell);
+        body.appendChild(row);
+        return;
+    }
+
+    medicines.forEach(m => {
+        const row = document.createElement("tr");
+
+        const name = document.createElement("td");
+        name.textContent = m.name;
+
+        const quantity = document.createElement("td");
+        quantity.textContent = m.quantity;
+
+        const status = document.createElement("td");
+        status.textContent = statusText(m.status);
+
+        const actions = document.createElement("td");
+        const wrap = document.createElement("div");
+        wrap.className = "actions";
+
+        const edit = document.createElement("button");
+        edit.className = "small-button secondary";
+        edit.textContent = "Editar";
+        edit.addEventListener("click", () => editMedicine(m.id));
+
+        const remove = document.createElement("button");
+        remove.className = "small-button danger";
+        remove.style.color = "white";
+        remove.textContent = "Eliminar";
+        remove.addEventListener("click", () => deleteMedicine(m.id));
+
+        wrap.append(edit, remove);
+        actions.appendChild(wrap);
+
+        row.append(name, quantity, status, actions);
+        body.appendChild(row);
+    });
+}
+
+// =======================================
+// 10. EDITAR MEDICAMENTO
+// =======================================
+
+function editMedicine(id) {
+    const m = medicines.find(item => item.id === id);
+    if (!m) return;
+
+    editingId = id;
+
+    document.getElementById("medName").value = m.name;
+    document.getElementById("medCategory").value = m.category;
+    document.getElementById("medQuantity").value = m.quantity;
+    document.getElementById("medStatus").value = m.status;
+
+    document.getElementById("formTitle").textContent = "Editar medicamento";
+    document.getElementById("saveMedicine").textContent = "Guardar cambios";
+    document.getElementById("cancelEdit").classList.remove("hidden");
+
+    document.getElementById("medicineForm").scrollIntoView({
+        behavior:"smooth"
+    });
+}
+
+function resetMedicineForm() {
+    editingId = null;
+    const feedback = document.getElementById("medicineFeedback");
+    if (feedback) feedback.textContent = "";
+    document.getElementById("medicineForm").reset();
+    document.getElementById("formTitle").textContent = "Registrar medicamento";
+    document.getElementById("saveMedicine").textContent = "Guardar medicamento";
+    document.getElementById("cancelEdit").classList.add("hidden");
+}
+
+// =======================================
+// 11. ELIMINAR MEDICAMENTO
+// =======================================
+
+async function deleteMedicine(id) {
+    const m = medicines.find(item => item.id === id);
+    if (!m) return;
+
+    const confirmDelete = confirm(
+        "¿Deseas eliminar " + m.name + " del inventario?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+        const supabase = window.supabaseClient;
+
+        // Verificar si existen solicitudes relacionadas
+        const { data: solicitudes, error: errorSolicitudes } = await supabase
+            .from("solicitudes")
+            .select("id")
+            .eq("medicamento_id", id)
+            .limit(1);
+
+        if (errorSolicitudes) throw errorSolicitudes;
+
+        if (solicitudes && solicitudes.length > 0) {
+            alert(
+                "No se puede eliminar este medicamento porque tiene solicitudes registradas. Puedes cambiar su inventario a agotado."
+            );
+            return;
+        }
+
+        // Eliminar primero el inventario
+        const { error: errorInventario } = await supabase
+            .from("inventario")
+            .delete()
+            .eq("medicamento_id", id);
+
+        if (errorInventario) throw errorInventario;
+
+        // Eliminar el medicamento
+        const { error: errorMedicamento } = await supabase
+            .from("medicamentos")
+            .delete()
+            .eq("id", id);
+
+        if (errorMedicamento) throw errorMedicamento;
+
+        await cargarCatalogoDesdeSupabase();
+
+        alert("Medicamento eliminado correctamente.");
+
+    } catch (error) {
+        console.error("Error al eliminar medicamento:", error);
+        alert("No se pudo eliminar: " + error.message);
+    }
+}
+
+// =======================================
+// 12. SOLICITUDES EN ADMINISTRACIÓN
+// =======================================
+
+function renderAdminRequests() {
+    const container = document.getElementById("adminRequests");
+    container.innerHTML = "";
+
+    if (!window.isAdmin) {
+        container.textContent = "Inicia sesión con la cuenta administradora para consultar las solicitudes.";
+        return;
+    }
+
+    const adminRows = window.adminRequestsData || [];
+    if (adminRows.length === 0) {
+        container.textContent = "No hay solicitudes registradas.";
+        return;
+    }
+
+    const labels = {
+        pendiente: "Solicitud registrada",
+        confirmada: "Solicitud confirmada",
+        en_preparacion: "Medicamento en preparación",
+        lista_para_reclamar: "Lista para reclamar",
+        cancelada: "Solicitud cancelada"
+    };
+
+    [...adminRows].forEach(r => {
+        const card = document.createElement("div");
+        card.className = "request";
+        card.style.marginTop = "14px";
+
+        const title = document.createElement("strong");
+        title.textContent = "Solicitud " + (r.codigo || "sin código");
+
+        const medicine = medicines.find(m => String(m.id) === String(r.medicamento_id));
+        const details = document.createElement("p");
+        details.className = "request-info";
+        details.textContent = "Solicitante: " + (r.nombre_solicitante || "No disponible") +
+            " | Medicamento: " + (medicine ? medicine.name : "No disponible") +
+            " | Fecha: " + (r.fecha || "No disponible") +
+            " | Horario: " + (r.horario || "No disponible");
+
+        const statusLine = document.createElement("p");
+        statusLine.className = "request-info";
+        statusLine.textContent = "Estado actual: " + (labels[r.estado] || r.estado);
+
+        const label = document.createElement("label");
+        label.textContent = "Actualizar estado de la solicitud";
+        label.htmlFor = "admin-status-" + r.id;
+
+        const select = document.createElement("select");
+        select.id = "admin-status-" + r.id;
+        select.setAttribute("aria-label", "Nuevo estado para solicitud " + (r.codigo || r.id));
+        [
+            ["pendiente", "Solicitud registrada"],
+            ["confirmada", "Solicitud confirmada"],
+            ["en_preparacion", "Medicamento en preparación"],
+            ["lista_para_reclamar", "Lista para reclamar"],
+            ["cancelada", "Solicitud cancelada"]
+        ].forEach(([value, text]) => {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = text;
+            select.appendChild(option);
+        });
+        select.value = r.estado;
+
+        const saveButton = document.createElement("button");
+        saveButton.type = "button";
+        saveButton.className = "button";
+        saveButton.style.marginTop = "10px";
+        saveButton.textContent = "Guardar estado";
+        saveButton.addEventListener("click", async () => {
+            if (typeof window.actualizarEstadoSolicitud !== "function") {
+                alert("El sistema todavía está verificando los permisos. Intenta nuevamente.");
+                return;
+            }
+            saveButton.disabled = true;
+            saveButton.textContent = "Guardando...";
+            const ok = await window.actualizarEstadoSolicitud(r.id, select.value);
+            saveButton.disabled = false;
+            saveButton.textContent = "Guardar estado";
+            if (ok) alert("El estado de la solicitud se actualizó correctamente.");
+        });
+
+        card.append(title, details, statusLine, label, select, saveButton);
+        container.appendChild(card);
+    });
+}
+
+// =======================================
+// 13. RESTAURAR DATOS DE PRUEBA
+// =======================================
+
+function resetDemo() {
+    alert(
+        "La restauración de datos demostrativos está desactivada porque los medicamentos ahora se administran desde Supabase."
+    );
+}
+
+// =======================================
+// 14. ACTUALIZAR TODA LA PÁGINA
+// =======================================
+
+function refreshAll() {
+    renderMedicines();
+    renderInventory();
+    renderRequests();
+    renderAdminRequests();
+    updateStats();
+}
+
+// =======================================
+// 15. INICIAR SISTEMA
+// =======================================
+
+// Permite que el módulo de Supabase actualice el catálogo sin alterar
+// las funciones de presentación que ya existen.
+window.aplicarMedicamentosSupabase = function(datos) {
+    if (!Array.isArray(datos)) return;
+    medicines = datos;
+    refreshAll();
+    console.log("Catálogo actualizado desde Supabase:", medicines.length, "medicamentos.");
+};
+
+refreshAll();
+actualizarAccesoMedicamentos();
+
+</script>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const SUPABASE_URL = 'https://sgxgqmbbgxldoeiaignd.supabase.co';
+const SUPABASE_KEY = 'sb_publishable__BABZ4qtFPyxPcoTJJhLzw_MCV7GSfI';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+window.supabaseClient = supabase;
+window.currentAuthUser = null;
+window.isAdmin = false;
+window.adminRequestsData = [];
+console.log('Conexión con Supabase preparada.');
+
+window.verificarAdministrador = async function() {
+    const navButton = document.getElementById('adminNavButton');
+    window.isAdmin = false;
+    if (!window.currentAuthUser) {
+        if (navButton) navButton.classList.add('hidden');
+        window.adminRequestsData = [];
+        if (typeof renderAdminRequests === 'function') renderAdminRequests();
+        return false;
+    }
+
+    const { data, error } = await supabase.rpc('es_administrador');
+    if (error) {
+        console.error('No se pudo verificar el permiso de administrador:', error);
+        if (navButton) navButton.classList.add('hidden');
+        if (typeof renderAdminRequests === 'function') renderAdminRequests();
+        return false;
+    }
+
+    window.isAdmin = data === true;
+    if (navButton) navButton.classList.toggle('hidden', !window.isAdmin);
+    if (!window.isAdmin) window.adminRequestsData = [];
+    if (typeof renderAdminRequests === 'function') renderAdminRequests();
+    return window.isAdmin;
+};
+
+window.cargarSolicitudesAdmin = async function() {
+    if (!window.currentAuthUser || !window.isAdmin) {
+        window.adminRequestsData = [];
+        if (typeof renderAdminRequests === 'function') renderAdminRequests();
+        return;
+    }
+
+    const { data, error } = await supabase
+        .from('solicitudes')
+        .select('id,codigo,nombre_solicitante,medicamento_id,fecha,horario,estado,creado_en')
+        .order('creado_en', { ascending: false });
+
+    if (error) {
+        console.error('Error al consultar todas las solicitudes:', error);
+        document.getElementById('adminRequests').textContent = 'No se pudieron cargar las solicitudes: ' + error.message;
+        return;
+    }
+
+    window.adminRequestsData = data || [];
+    if (typeof renderAdminRequests === 'function') renderAdminRequests();
+};
+
+window.actualizarEstadoSolicitud = async function(id, nuevoEstado) {
+    const permitidos = ['pendiente', 'confirmada', 'en_preparacion', 'lista_para_reclamar', 'cancelada'];
+    if (!window.currentAuthUser || !window.isAdmin || !permitidos.includes(nuevoEstado)) {
+        alert('No tienes permiso para realizar este cambio.');
+        return false;
+    }
+
+    const { error } = await supabase
+        .from('solicitudes')
+        .update({ estado: nuevoEstado })
+        .eq('id', id);
+
+    if (error) {
+        console.error('Error al actualizar el estado:', error);
+        alert('No se pudo actualizar el estado: ' + error.message);
+        return false;
+    }
+
+    await window.cargarSolicitudesAdmin();
+    if (typeof window.cargarHistorialUsuario === 'function') {
+        await window.cargarHistorialUsuario();
+    }
+    return true;
+};
+
+function mostrarEstadoCuenta(message, loggedIn = false) {
+    const status = document.getElementById('authStatus');
+    status.textContent = message;
+    document.getElementById('logoutButton').classList.toggle('hidden', !loggedIn);
+}
+
+window.registrarCuenta = async function() {
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    if (!email || password.length < 6) {
+        mostrarEstadoCuenta('Escribe un correo de prueba y una contraseña de al menos 6 caracteres.');
+        return;
+    }
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+        mostrarEstadoCuenta('No se pudo crear la cuenta: ' + error.message);
+        return;
+    }
+    if (data.session) {
+        window.currentAuthUser = data.user;
+        mostrarEstadoCuenta('Cuenta creada. Sesión iniciada: ' + data.user.email, true);
+        await window.verificarAdministrador();
+        actualizarAccesoMedicamentos();
+        await window.cargarHistorialUsuario();
+    } else {
+        mostrarEstadoCuenta('Cuenta creada. Supabase solicita confirmar el correo antes de iniciar sesión. Revisa el correo de prueba configurado.');
+    }
+};
+
+window.iniciarSesion = async function() {
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    if (!email || !password) {
+        mostrarEstadoCuenta('Escribe el correo y la contraseña de tu cuenta de prueba.');
+        return;
+    }
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+        mostrarEstadoCuenta('No se pudo iniciar sesión: ' + error.message);
+        return;
+    }
+    window.currentAuthUser = data.user;
+    mostrarEstadoCuenta('Sesión iniciada: ' + data.user.email, true);
+    await window.verificarAdministrador();
+    actualizarAccesoMedicamentos();
+    await window.cargarHistorialUsuario();
+};
+
+window.cerrarSesion = async function() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+        mostrarEstadoCuenta('No se pudo cerrar sesión: ' + error.message, true);
+        return;
+    }
+    window.currentAuthUser = null;
+    window.isAdmin = false;
+    window.adminRequestsData = [];
+    document.getElementById('adminNavButton').classList.add('hidden');
+    actualizarAccesoMedicamentos();
+    document.getElementById('prescriptionImage').value = '';
+    document.getElementById('recognizedMedicine').value = '';
+    document.getElementById('ocrText').value = '';
+    document.getElementById('confirmRecognizedMedicine').disabled = true;
+    document.getElementById('prescriptionPreview').classList.add('hidden');
+    if (prescriptionObjectUrl) { URL.revokeObjectURL(prescriptionObjectUrl); prescriptionObjectUrl = null; }
+    requests = [];
+    mostrarEstadoCuenta('Sesión cerrada. Inicia sesión para ver tu historial.');
+    if (typeof renderRequests === 'function') renderRequests();
+};
+
+window.cargarHistorialUsuario = async function() {
+    if (!window.currentAuthUser) return;
+    const { data, error } = await supabase
+        .from('solicitudes')
+        .select('id,identificacion,codigo,nombre_solicitante,medicamento_id,fecha,horario,estado,creado_en')
+        .eq('usuario_id', window.currentAuthUser.id)
+        .order('creado_en', { ascending: false });
+    if (error) {
+        console.error('Error al cargar el historial privado:', error);
+        document.getElementById('requestList').textContent = 'No se pudo cargar el historial: ' + error.message;
+        return;
+    }
+    requests = data.map(row => {
+        const medicine = medicines.find(m => String(m.id) === String(row.medicamento_id));
+        return {
+            code: row.codigo,
+            name: row.nombre_solicitante,
+            medicine: medicine ? medicine.name : 'Medicamento',
+            date: row.fecha,
+            time: row.horario,
+            status: row.estado
+        };
+    });
+    if (typeof renderRequests === 'function') renderRequests();
+    if (typeof updateStats === 'function') updateStats();
+};
+
+// Recupera la sesión existente al recargar la página.
+const { data: sessionData } = await supabase.auth.getSession();
+if (sessionData.session?.user) {
+    window.currentAuthUser = sessionData.session.user;
+    mostrarEstadoCuenta('Sesión activa: ' + sessionData.session.user.email, true);
+    await window.verificarAdministrador();
+} else {
+    await window.verificarAdministrador();
+}
+actualizarAccesoMedicamentos();
+supabase.auth.onAuthStateChange((_event, session) => {
+    window.currentAuthUser = session?.user || null;
+    // Ejecuta las consultas después de que termine el evento de autenticación.
+    Promise.resolve().then(async () => {
+        await window.verificarAdministrador();
+        actualizarAccesoMedicamentos();
+        if (!window.currentAuthUser) {
+            requests = [];
+            mostrarEstadoCuenta('No has iniciado sesión.');
+            if (typeof renderRequests === 'function') renderRequests();
+        } else if (typeof window.cargarHistorialUsuario === 'function') {
+            await window.cargarHistorialUsuario();
+        }
+    });
+});
+
+async function cargarCatalogoDesdeSupabase() {
+    const { data: medicamentos, error: errorMedicamentos } = await supabase
+        .from('medicamentos').select('id,nombre,categoria,descripcion');
+    if (errorMedicamentos) { console.error('Error al consultar medicamentos:', errorMedicamentos); return; }
+    const { data: inventario, error: errorInventario } = await supabase
+        .from('inventario').select('medicamento_id,cantidad,estado');
+    if (errorInventario) { console.error('Error al consultar inventario:', errorInventario); return; }
+    const catalogo = medicamentos.map(m => {
+        const existencia = inventario.find(i => i.medicamento_id === m.id);
+        return { id:m.id, name:m.nombre, category:m.categoria || 'Sin categoría', description:m.descripcion || '', quantity:existencia ? Number(existencia.cantidad) : 0, status:existencia ? existencia.estado : 'pendiente' };
+    });
+    if (typeof window.aplicarMedicamentosSupabase === 'function') window.aplicarMedicamentosSupabase(catalogo);
+    if (window.currentAuthUser) await window.cargarHistorialUsuario();
+}
+window.cargarCatalogoDesdeSupabase = cargarCatalogoDesdeSupabase;
+await cargarCatalogoDesdeSupabase();
+</script>
+
+</body>
+</html>
